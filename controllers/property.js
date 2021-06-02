@@ -1,6 +1,25 @@
 const Property = require('../models/property')
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
+const path = require('path')
+const fs = require('fs')
+
+
+exports.propertyById =(req,res,next,id) =>{
+    Property.findById(id).populate('location').exec((err,property) =>{
+        if(err){
+            return res.status(400).json({
+                error:'property not found'
+            })
+        }
+        req.property = property
+        next()
+    })
+} 
+exports.singleProperty = (req,res) =>{
+    
+    return res.json(req.property)
+} 
 
  
 exports.listProperty =  (req, res, next) => {
@@ -31,11 +50,19 @@ exports.listProperty =  (req, res, next) => {
                 error:"Image should be less than 3mb"
             })
         }
-        
+       
         req.files.map((file)=>{
-            console.log(file.path)
-            property.photo.push(file.path)
+          let fileType =  file.mimetype.split('/')[1]
           
+          let newFileName = file.filename + "." + fileType
+         
+            fs.rename(`./uploads/${file.filename}`,`./uploads/${newFileName}`,()=>{
+                 console.log('done')
+             })
+            
+            property.photo.push(
+               newFileName)
+           
         })
       
     }
@@ -51,3 +78,14 @@ exports.listProperty =  (req, res, next) => {
    
     
   }
+  exports.showAllProperty =(req,res) =>{
+      Property.find({}).exec((err,data)=>{
+          if(err){
+              res.status(400).json({
+                  error:err
+              })
+          }
+          res.json(data)
+      })
+  }
+  

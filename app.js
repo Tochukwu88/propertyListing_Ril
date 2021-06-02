@@ -16,6 +16,7 @@ mongoose.connect(process.env.MONGOOSE_DEV_DB,{useNewUrlParser: true, useUnifiedT
 })
 app.use(express.json())
 app.use(morgan('dev'))
+app.use("/v1",express.static('uploads'))
 
 app.use('/v1',authRoutes)
 app.use('/v1',agentRoutes)
