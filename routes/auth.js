@@ -5,8 +5,8 @@ const { userValidationRules,
     
     validate,authValidationRules,
     authvalidate} =require('../validators/index')
-router.get('/register', userValidationRules() ,validate,register)
-router.get('/login',authValidationRules(),authvalidate, login)
+router.post('/register', userValidationRules() ,validate,register)
+router.post('/login',authValidationRules(),authvalidate, login)
 
 
 
