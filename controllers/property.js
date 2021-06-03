@@ -6,7 +6,7 @@ const fs = require('fs')
 
 
 exports.propertyById =(req,res,next,id) =>{
-    Property.findById(id).populate('location').exec((err,property) =>{
+    Property.findById(id).populate('location','agent').exec((err,property) =>{
         if(err){
             return res.status(400).json({
                 error:'property not found'
@@ -37,8 +37,8 @@ exports.listProperty =  (req, res, next) => {
     })
 
     
-    const { address,description,location,price} = req.body
-    if(!address || !description || !price || !location ){
+    const { type,address,description,location,price,agent} = req.body
+    if(!address || !description || !price || !location ||!agent || !type){
         return res.status(400).json({
             error:"all fields are required"
         })
@@ -68,24 +68,44 @@ exports.listProperty =  (req, res, next) => {
     }
     property.save((err,result)=>{
         if(err){
-            res.status(400).json({
+        return    res.status(400).json({
                 error:err
             })
         }
        
-        res.json(result)
+    return    res.json(result)
     })
    
     
   }
   exports.showAllProperty =(req,res) =>{
-      Property.find({}).exec((err,data)=>{
+      Property.find({}).populate('location','_id location').populate('agent','_id fullName phone ').exec((err,data)=>{
           if(err){
-              res.status(400).json({
+         return     res.status(400).json({
                   error:err
               })
           }
-          res.json(data)
+        return  res.json(data)
       })
   }
+  exports.listPropertyByLocation = (req,res) =>{
+    Property.find({location:req.location}).populate('location','_id location').populate('agent','_id fullName phone ').exec((err,data)=>{
+        if(err){
+        return    res.status(400).json({
+                error:err
+            })
+        }
+       return res.json(data)
+    })
+}
+exports.listPropertyByAgent = (req,res) =>{
+    Property.find({agent:req.profile}).populate('agent','_id fullName phone ').populate('location','_id location').exec((err,data)=>{
+        if(err){
+         return   res.status(400).json({
+                error:err
+            })
+        }
+      return  res.json(data)
+    })
+}
   

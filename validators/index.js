@@ -3,7 +3,7 @@ const userValidationRules = () => {
   return [
     // check('name'," name is required.")
     // .notEmpty().isString(),
-    check('name','name is required').notEmpty().withMessage('name is required'),
+    check('fullName','fullName is required').notEmpty().withMessage(' fullname is required'),
     check('email','email is required').notEmpty().isEmail().withMessage('email must contain @'),
     
     check('password','password is required').notEmpty().isLength({ min: 6 })

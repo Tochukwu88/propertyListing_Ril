@@ -2,11 +2,15 @@ const mongoose = require('mongoose');
 const {ObjectId} = mongoose.Schema
 
 const propertySchema = new mongoose.Schema({
-    address:{
+    type:{
         type:String,
-        trim:true,
+        
         required:true,
       
+    },
+    address:{
+        type:String,
+        required:true
     },
     description:{
        type:String,
@@ -15,13 +19,19 @@ const propertySchema = new mongoose.Schema({
    price:{
     type:Number,
     trim:true,
-    // required:true,
+     required:true,
     maxlength:32
 },
 location:{
     type:ObjectId,
     ref:"Location",
-    // required:true,
+     required:true,
+    
+},
+agent:{
+    type:ObjectId,
+    ref:"Agent",
+     required:true,
     
 },
 

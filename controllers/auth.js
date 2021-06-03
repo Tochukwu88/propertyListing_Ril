@@ -5,8 +5,8 @@ const expressJWT = require('express-jwt')
 require('dotenv').config()
 
 exports.register = (req,res) =>{
-    const {name,email,password, confirmPassword} = req.body
-    console.log(name,email,password,confirmPassword)
+    const {fullName,email,password, confirmPassword} = req.body
+    
     if(password !== confirmPassword){
       return  res.status(400).json({
             error:"password do not match"
@@ -14,7 +14,7 @@ exports.register = (req,res) =>{
     }
    
 
-    let newAgent = new Agent({name,email,password})
+    let newAgent = new Agent({fullName,email,password})
     newAgent.save((err,agent)=>{
         if(err){
           return  res.status(400).json({
@@ -41,6 +41,7 @@ exports.login = (req,res) =>{
             })
         }
         const token =  jwt.sign({_id:agent._id},process.env.JWT_SECRET,{expiresIn:'1d'})
+        res.cookie('token' , token, {expiresIn:'1d'})
         const {_id,name,email} = agent
        return res.json({
            token,
@@ -48,4 +49,17 @@ exports.login = (req,res) =>{
        })
     })
 
+}
+exports.checkToken = expressJWT({
+    secret:process.env.JWT_SECRET,algorithms: ['HS256'],
+    userProperty:"auth"
+})
+exports.authregAgent = (req,res,next) =>{
+    let agent = req.profile && req.auth && req.profile._id == req.auth._id
+    if(!agent){
+        return res.status(403).json({
+            error:'please login'
+        })
+    }
+    next()
 }

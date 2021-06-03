@@ -2,11 +2,15 @@ const mongoose = require('mongoose');
 const crypto = require('crypto')
 const uuidv1 = require('uuidv1')
 const agentSchema = new mongoose.Schema({
-    name:{
+    fullName:{
         type:String,
         trim:true,
         required:true,
         maxlength:50
+    },
+    phone:{
+        type:Number
+
     },
     email:{
        type:String,
