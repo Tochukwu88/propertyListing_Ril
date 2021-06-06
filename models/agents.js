@@ -6,10 +6,11 @@ const agentSchema = new mongoose.Schema({
         type:String,
         trim:true,
         required:true,
-        maxlength:50
+        
     },
     phone:{
-        type:Number
+        type:Number,
+        trim:true
 
     },
     email:{
@@ -17,7 +18,7 @@ const agentSchema = new mongoose.Schema({
        unique:true,
        trim:true,
        required:true,
-       maxlength:50
+       
    },
    hashed_password:{
        type:String,

@@ -23,6 +23,7 @@ exports.singleProperty = (req,res) =>{
 
  
 exports.listProperty =  (req, res, next) => {
+    console.log(req.files,req.body)
     const match = ["image/png", "image/jpeg"];
 
 
@@ -37,8 +38,8 @@ exports.listProperty =  (req, res, next) => {
     })
 
     
-    const { type,address,description,location,price,agent} = req.body
-    if(!address || !description || !price || !location ||!agent || !type){
+    const { type,address,overview,price,bed,room,bath,area,agent} = req.body
+    if(!address || !overview || !price  || !type || !bed || !room ||!bath || !area ||!agent ){
         return res.status(400).json({
             error:"all fields are required"
         })
