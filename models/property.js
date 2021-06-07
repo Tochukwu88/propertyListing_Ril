@@ -15,6 +15,21 @@ const propertySchema = new mongoose.Schema({
         required:true,
         trim:true,
     },
+    city:{
+      type:String,
+        required:true,
+        trim:true,
+    },
+    state:{
+      type:String,
+        required:true,
+        trim:true,
+    },
+    country:{
+      type:String,
+        required:true,
+        trim:true,
+    },
     overview:{
        type:String,
        trim:true,
@@ -44,21 +59,21 @@ area:{
   type:Number,
   trim:true
 },
-location: {
-    type: {
-      type: String, 
-      enum: ['Point'], 
+// location: {
+//     type: {
+//       type: String, 
+//       enum: ['Point'], 
     
-    },
-    coordinates: {
-      type: [Number],
-      index:'2dsphere'
-    },
-    formattedAddress:String,
-    city:String,
-    country:String
+//     },
+//     coordinates: {
+//       type: [Number],
+//       index:'2dsphere'
+//     },
+//     formattedAddress:String,
+//     city:String,
+//     country:String
 
-  },
+//   },
 agent:{
     type:ObjectId,
     ref:"Agent",
@@ -75,15 +90,15 @@ photo: []
 },
 {timestamps:true}
 )
-propertySchema.pre('save',async function(next){
-     const loc = await geocoder.geocode(this.address)
-     this.location= {
-         type:'Point',
-         coordinates:[loc[0].latitude, loc[0].longitude],
-         formattedAddress:loc[0].formattedAddress,
-         city:loc[0].city,
-         country:loc[0].country
-     }
+// propertySchema.pre('save',async function(next){
+//      const loc = await geocoder.geocode(this.address)
+//      this.location= {
+//          type:'Point',
+//          coordinates:[loc[0].latitude, loc[0].longitude],
+//          formattedAddress:loc[0].formattedAddress,
+//          city:loc[0].city,
+//          country:loc[0].country
+//      }
      
      
       
@@ -92,8 +107,15 @@ propertySchema.pre('save',async function(next){
 
      
     
-    next()
+//     next()
 
+// })
+propertySchema.index({
+   city:'text',
+   state:'text',
+  country:'text',
+  
+  type:'text'
 })
 
 

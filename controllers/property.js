@@ -38,8 +38,8 @@ exports.listProperty =  (req, res, next) => {
     })
 
     
-    const { type,address,overview,price,bed,room,bath,area,agent} = req.body
-    if(!address || !overview || !price  || !type || !bed || !room ||!bath || !area ||!agent ){
+    const { type,address,overview,price,bed,room,bath,area,agent,city,state,country} = req.body
+    if(!address || !overview || !price  || !type || !bed || !room ||!bath || !area ||!agent || !city ||!state ||!country ){
         return res.status(400).json({
             error:"all fields are required"
         })
@@ -109,4 +109,16 @@ exports.listPropertyByAgent = (req,res) =>{
       return  res.json(data)
     })
 }
-  
+  exports.searchProperty =(req,res) =>{
+      console.log(req.query)
+      const queryLocation =req.query.city
+      Property.find({$text:{$search:queryLocation}}).exec((err,result)=>{
+        if(err){
+            return   res.status(400).json({
+                   error:err
+               })
+           }
+         return  res.json(result)
+
+      })
+  }

@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 
 const cors = require('cors');
-const locationRoutes = require('./routes/location')
+
 const propertyRoutes = require('./routes/property')
 const authRoutes = require('./routes/auth')
 const  agentRoutes = require('./routes/agent')
@@ -25,7 +25,7 @@ app.use("/v1",express.static('uploads'))
 app.use('/v1',authRoutes)
 app.use('/v1',agentRoutes)
 app.use('/v1',propertyRoutes)
-app.use('/v1',locationRoutes)
+
 
 
 
